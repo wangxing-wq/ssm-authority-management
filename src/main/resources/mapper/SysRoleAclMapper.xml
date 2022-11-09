@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wx.dao.SysRoleAclMapper">
+    <resultMap id="BaseResultMap" type="com.wx.domain.entity.SysRoleAcl">
+        <!--@mbg.generated-->
+        <!--@Table sys_role_acl-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="acl_id" jdbcType="INTEGER" property="aclId"/>
+        <result column="operator" jdbcType="VARCHAR" property="operator"/>
+        <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime"/>
+        <result column="operate_ip" jdbcType="VARCHAR" property="operateIp"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id,
+        role_id,
+        acl_id,
+        `operator`,
+        operate_time,
+        operate_ip
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        <!--@mbg.generated-->
+        select
+        <include refid="Base_Column_List"/>
+        from sys_role_acl
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        <!--@mbg.generated-->
+        delete
+        from sys_role_acl
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.wx.domain.entity.SysRoleAcl"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into sys_role_acl (role_id, acl_id, `operator`,
+                                  operate_time, operate_ip)
+        values (#{roleId,jdbcType=INTEGER}, #{aclId,jdbcType=INTEGER}, #{operator,jdbcType=VARCHAR},
+                #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.wx.domain.entity.SysRoleAcl"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into sys_role_acl
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="aclId != null">
+                acl_id,
+            </if>
+            <if test="operator != null">
+                `operator`,
+            </if>
+            <if test="operateTime != null">
+                operate_time,
+            </if>
+            <if test="operateIp != null">
+                operate_ip,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="aclId != null">
+                #{aclId,jdbcType=INTEGER},
+            </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="operateTime != null">
+                #{operateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operateIp != null">
+                #{operateIp,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.wx.domain.entity.SysRoleAcl">
+        <!--@mbg.generated-->
+        update sys_role_acl
+        <set>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="aclId != null">
+                acl_id = #{aclId,jdbcType=INTEGER},
+            </if>
+            <if test="operator != null">
+                `operator` = #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="operateTime != null">
+                operate_time = #{operateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operateIp != null">
+                operate_ip = #{operateIp,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.wx.domain.entity.SysRoleAcl">
+        <!--@mbg.generated-->
+        update sys_role_acl
+        set role_id      = #{roleId,jdbcType=INTEGER},
+            acl_id       = #{aclId,jdbcType=INTEGER},
+            `operator`   = #{operator,jdbcType=VARCHAR},
+            operate_time = #{operateTime,jdbcType=TIMESTAMP},
+            operate_ip   = #{operateIp,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="findAclListByRoleId" resultType="java.lang.Integer">
+        select acl_id
+        from sys_role_acl
+        where role_id = #{role_id}
+    </select>
+
+    <select id="findAclListByUserId" resultType="java.lang.Integer">
+        select acl_id
+        from sys_role_user
+                 join sys_role_acl
+        where sys_role_user.role_id = sys_role_acl.role_id
+          and user_id =
+              #{user_id}
+    </select>
+
+    <insert id="batchInsert" keyColumn="id" keyProperty="id">
+        insert into sys_role_acl (role_id, acl_id, `operator`,
+        operate_time, operate_ip)
+        values
+        <foreach collection="collection" item="item"  separator=",">
+            (#{item.roleId,jdbcType=INTEGER}, #{item.aclId,jdbcType=INTEGER}, #{item.operator,jdbcType=VARCHAR},
+            #{item.operateTime,jdbcType=TIMESTAMP}, #{item.operateIp,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <delete id="deleteByRoleId">
+        delete from sys_role_acl where role_id = #{roleId}
+    </delete>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--    对于一些常用注解的配置进行自动配置-->
+    <!--    AutowiredAnnotationBeanPostProcessor-->
+    <!--    CommonAnnotationBeanPostProcessor-->
+    <!--    PersistenceAnnotationBeanPostProcessor-->
+    <!--    RequiredAnnotationBeanPostProcessor-->
+    <context:annotation-config/>
+    <!--会自动注册DefaultAnnotationHandlerMapping与AnnotationMethodHandlerAdapter-->
+    <mvc:annotation-driven/>
+    <context:component-scan base-package="com.wx"/>
+    <!--    除了具有context:annotation-config的功能之外，还具有自动将带有@component,@service,@Repository等注解的对象注册到spring容器中的功能。-->
+
+    <mvc:interceptors>
+        <bean class="com.wx.interceptor.HttpInterceptor"/>
+    </mvc:interceptors>
+    <!--  启动包扫描功能  -->
+    <context:component-scan base-package="com.wx.controller"/>
+    <context:component-scan base-package="com.wx.service"/>
+    <mvc:resources location="/js/" mapping="/js/**"/>
+    <mvc:resources location="/css/" mapping="/css/**"/>
+    <mvc:resources location="/bootstrap3.3.5/" mapping="/bootstrap3.3.5/**"/>
+    <mvc:resources location="/assets/" mapping="/assets/**"/>
+    <mvc:resources location="/ztree/" mapping="/ztree/**"/>
+    <!--    <bean class="com.mmall.common.ApplicationContextHelper" lazy-init="false"/>-->
+    <!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" /> -->
+    <!--    <bean class="com.mmall.common.SpringExceptionResolver"/>-->
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"/>
+    <!--  JSON返回值配置  -->
+    <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
+    <!--    视图解析器配置 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+</beans>
