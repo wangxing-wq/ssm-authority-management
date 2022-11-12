@@ -127,4 +127,8 @@
     <delete id="deleteByRoleId">
         delete from sys_role_user where role_id = #{roleId,jdbcType=INTEGER}
     </delete>
+
+    <select id="getRoleIdListByUserId" resultType="java.lang.Integer">
+        select role_id from sys_role_user where user_id = #{userId}
+    </select>
 </mapper>

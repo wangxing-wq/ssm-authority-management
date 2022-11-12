@@ -29,4 +29,10 @@ public interface SysAclMapper {
 	List<SysAcl> findAll();
 	
 	List<SysAcl> findListByUserId(int userId);
+	
+	List<SysAcl> findListByUserIdList(List<Integer> userAclIdList);
+	
+	List<SysAcl> getByUrl(String url);
+	
+	List<SysAcl> findListByAclId(List<Integer> aclIdList);
 }

@@ -22,7 +22,8 @@ public class SysDeptService {
 	
 	@Resource
 	private SysDeptMapper sysDeptMapper;
-	
+	@Resource
+	private SysLogService sysLogService;
 	
 	public boolean deleteByPrimaryKey(Integer id) {
 		return sysDeptMapper.deleteByPrimaryKey(id) != 0;
@@ -35,6 +36,7 @@ public class SysDeptService {
 		// 计算Level,规则,获取父类ParentId 进行计算
 		// 构建Bean
 		SysDept sysDept = getSysDept(deptParam);
+		sysLogService.saveDeptLog(null, sysDept);
 		return sysDeptMapper.insert(sysDept) != 0;
 	}
 	
@@ -90,6 +92,7 @@ public class SysDeptService {
 			}
 			sysDeptMapper.updateByPrimaryKey(sysDept);
 		}
+		sysLogService.saveDeptLog(oldDep, newDept);
 	}
 	
 	private SysDept getSysDept(DeptParam deptParam) {

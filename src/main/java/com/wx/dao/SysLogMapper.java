@@ -1,6 +1,11 @@
 package com.wx.dao;
 
+import com.wx.domain.beans.PageQuery;
+import com.wx.domain.dto.SearchLogDto;
 import com.wx.domain.entity.SysLog;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author 22343
@@ -19,4 +24,8 @@ public interface SysLogMapper {
     int updateByPrimaryKeySelective(SysLog record);
 
     int updateByPrimaryKey(SysLog record);
+    
+    int countBySearchDto(@Param("dto") SearchLogDto dto);
+    
+    List<SysLog> getPageListBySearchDto(@Param("dto") SearchLogDto dto, @Param("page") PageQuery page);
 }

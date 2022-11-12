@@ -24,21 +24,8 @@ public class SysRoleService {
 	private SysRoleMapper sysRoleMapper;
 	@Resource
 	private SysRoleUserMapper sysRoleUserMapper;
-	
-	public int deleteByPrimaryKey(Integer id) {
-		return sysRoleMapper.deleteByPrimaryKey(id);
-	}
-	
-	
-	public int insert(SysRole record) {
-		return sysRoleMapper.insert(record);
-	}
-	
-	
-	public int insertSelective(SysRole record) {
-		return sysRoleMapper.insertSelective(record);
-	}
-	
+	@Resource
+	private SysLogService sysLogService;
 	
 	public SysRole selectByPrimaryKey(Integer id) {
 		return sysRoleMapper.selectByPrimaryKey(id);
@@ -71,6 +58,7 @@ public class SysRoleService {
 		checkName(param.getName());
 		SysRole build = buildSysRole(param);
 		sysRoleMapper.insert(build);
+		sysLogService.saveRoleLog(null, build);
 	}
 	
 	private static SysRole buildSysRole(RoleParam param) {
@@ -92,6 +80,7 @@ public class SysRoleService {
 		checkName(param.getName());
 		SysRole sysRole = buildSysRole(param);
 		sysRoleMapper.updateByPrimaryKeySelective(sysRole);
+		// sysLogService.saveRoleLog(before, after);
 	}
 	
 	public List<SysRole> getAll() {

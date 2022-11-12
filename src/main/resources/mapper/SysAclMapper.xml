@@ -205,4 +205,22 @@
             where sys_role_user.user_id = #{userId} and sys_role_user.role_id = sys_role_acl.role_id
         )
     </select>
+
+    <select id="getByUrl" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_acl where url = #{url}
+    </select>
+<!--    TODO: 2022/11/10 -->
+    <select id="findListByUserIdList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_acl
+    </select>
+
+    <select id="findListByAclId" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_acl
+        <where>
+            id in
+            <foreach collection="collection" item="i" separator="," open="(" close=")">
+                #{i}
+            </foreach>
+        </where>
+    </select>
 </mapper>

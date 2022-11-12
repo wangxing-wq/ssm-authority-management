@@ -24,23 +24,10 @@ public class SysAclService{
 
     @Resource
     private SysAclMapper sysAclMapper;
-
+    @Resource
+    private SysLogService sysLogService;
     
-    public int deleteByPrimaryKey(Integer id) {
-        return sysAclMapper.deleteByPrimaryKey(id);
-    }
 
-    
-    public int insert(SysAcl record) {
-        return sysAclMapper.insert(record);
-    }
-
-    
-    public int insertSelective(SysAcl record) {
-        return sysAclMapper.insertSelective(record);
-    }
-
-    
     public SysAcl selectByPrimaryKey(Integer id) {
         return sysAclMapper.selectByPrimaryKey(id);
     }
@@ -63,13 +50,14 @@ public class SysAclService{
         build.setOperateTime(new Date());
         build.setOperator(RequestHolder.getCurrentUser().getUsername());
         sysAclMapper.insertSelective(build);
+        sysLogService.saveAclLog(null, build);
     }
     
 
     public void update(AclParam param) {
         SysAcl oldAcl = sysAclMapper.selectByPrimaryKey(param.getId());
         // TODO: 2022/10/29 name,url and aclModuleId,
-        
+        // sysLogService.saveAclLog(before, after);
     }
     
     public PageResult<SysAcl> getPageByAclModuleId(Integer aclModuleId,PageQuery pageQuery) {

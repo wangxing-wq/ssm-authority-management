@@ -24,7 +24,8 @@ public class SysAclModuleService {
 	
 	@Resource
 	private SysAclModuleMapper sysAclModuleMapper;
-	
+	@Resource
+	private SysLogService sysLogService;
 	public SysAclModule selectByPrimaryKey(Integer id) {
 		return sysAclModuleMapper.selectByPrimaryKey(id);
 	}
@@ -40,6 +41,7 @@ public class SysAclModuleService {
 		SysAclModule build = getAclModule(param);
 		build.setLevel(LevelHelper.calculateLevel(sysAclModuleMapper.selectByPrimaryKey(param.getParentId()).getLevel(),param.getParentId()));
 		sysAclModuleMapper.insertSelective(build);
+		sysLogService.saveAclModuleLog(null, build);
 	}
 	
 	@Transactional(rollbackFor=Exception.class)
@@ -62,6 +64,8 @@ public class SysAclModuleService {
 			item.setLevel(item.getLevel().replace(level,aclModule.getLevel()));
 			sysAclModuleMapper.updateByPrimaryKey(item);
 		});
+		
+		sysLogService.saveAclModuleLog(oldAclModule, aclModule);
 	}
 	
 	private void checkNameExists(AclModuleParam param) {

@@ -27,26 +27,8 @@ public class SysUserService {
 	@Resource
 	private SysUserMapper sysUserMapper;
 	@Resource
-	SysLogMapper sysLogMapper;
+	private SysLogService sysLogService;
 	
-	public int deleteByPrimaryKey(Integer id) {
-		return sysUserMapper.deleteByPrimaryKey(id);
-	}
-	
-	
-	public int insert(SysUser record) {
-		return sysUserMapper.insert(record);
-	}
-	
-	
-	public int insertSelective(SysUser record) {
-		return sysUserMapper.insertSelective(record);
-	}
-	
-	
-	public SysUser selectByPrimaryKey(Integer id) {
-		return sysUserMapper.selectByPrimaryKey(id);
-	}
 	
 	
 	public int updateByPrimaryKeySelective(SysUser record) {
@@ -74,7 +56,7 @@ public class SysUserService {
 		user.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
 		user.setOperateTime(new Date());
 		sysUserMapper.insertSelective(user);
-		// sysLogMapper.save(null, user);
+		sysLogService.saveUserLog(null, user);
 	}
 	
 	public void update(UserParam param) {
@@ -85,6 +67,7 @@ public class SysUserService {
 		user.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
 		user.setOperateTime(new Date());
 		sysUserMapper.updateByPrimaryKey(user);
+		sysLogService.saveUserLog(user, sysUserMapper.selectByPrimaryKey(param.getId()));
 	}
 	
 	public PageResult<SysUser> getPageByDeptId(int deptId,PageQuery pageQuery) {

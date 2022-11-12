@@ -141,4 +141,14 @@
     <delete id="deleteByRoleId">
         delete from sys_role_acl where role_id = #{roleId}
     </delete>
+
+    <select id="getAclIdListByRoleIdList" resultType="java.lang.Integer">
+        select acl_id from sys_role_acl
+        <where>
+            role_id in
+            <foreach collection="collection" item="i" open="(" close=")" separator=",">
+                #{i,jdbcType=INTEGER}
+            </foreach>
+        </where>
+    </select>
 </mapper>
