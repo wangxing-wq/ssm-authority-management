@@ -1,6 +1,5 @@
 package com.wx.filter;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Sets;
 import com.wx.domain.beans.JsonData;

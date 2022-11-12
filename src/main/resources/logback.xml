@@ -23,7 +23,7 @@
     <!--</layout>-->
     <!--</appender>-->
     <!---->
-    <logger name="com.wx.dao" level="DEBUG">
+    <logger name="com.wx" level="DEBUG">
          <appender-ref ref="STDOUT"/>
     </logger>
 

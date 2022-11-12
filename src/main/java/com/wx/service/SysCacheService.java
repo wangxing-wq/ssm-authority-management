@@ -1,6 +1,5 @@
 package com.wx.service;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.common.base.Joiner;
 import com.wx.constant.CacheKeyConstants;
 import com.wx.domain.beans.RedisPool;
@@ -11,8 +10,8 @@ import redis.clients.jedis.ShardedJedis;
 
 import javax.annotation.Resource;
 
-@Service
 @Slf4j
+@Service
 public class SysCacheService {
 
     @Resource(name = "redisPool")

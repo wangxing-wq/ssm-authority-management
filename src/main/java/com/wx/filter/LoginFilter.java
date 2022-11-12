@@ -21,7 +21,7 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
-
+        // 看门狗
         SysUser sysUser = (SysUser)req.getSession().getAttribute("user");
         if (sysUser == null) {
             String path = "/signin.jsp";

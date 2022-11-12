@@ -8,7 +8,7 @@
 
     <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig" />
 
-    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool" scope="singleton" >
+    <bean id="shardedJedisPool" class="redis.clients.jedis.ShardedJedisPool">
         <constructor-arg index="0" ref="jedisPoolConfig" />
         <constructor-arg index="1">
             <list>

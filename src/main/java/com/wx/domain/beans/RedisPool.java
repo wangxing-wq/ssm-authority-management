@@ -7,22 +7,22 @@ import redis.clients.jedis.ShardedJedisPool;
 
 import javax.annotation.Resource;
 
-@Service("redisPool")
 @Slf4j
+@Service("redisPool")
 public class RedisPool {
-
+    
     @Resource(name = "shardedJedisPool")
     private ShardedJedisPool shardedJedisPool;
-
+    
     public ShardedJedis instance() {
         return shardedJedisPool.getResource();
     }
-
+    
     public void safeClose(ShardedJedis shardedJedis) {
         try {
-           if (shardedJedis != null) {
-               shardedJedis.close();
-           }
+            if (shardedJedis != null) {
+                shardedJedis.close();
+            }
         } catch (Exception e) {
             log.error("return redis resource exception", e);
         }
