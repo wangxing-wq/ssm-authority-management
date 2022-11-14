@@ -51,7 +51,6 @@
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.wx.domain.entity.SysLog"
             useGeneratedKeys="true">
-        <!--@mbg.generated-->
         insert into sys_log
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="type != null">

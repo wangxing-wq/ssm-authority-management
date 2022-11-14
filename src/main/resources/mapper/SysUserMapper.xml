@@ -197,7 +197,8 @@
     </select>
 
     <select id="selectByPage" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
+        select
+        <include refid="Base_Column_List"/>
         from sys_user
         <where>
             dept_id = #{deptId}
@@ -206,11 +207,38 @@
     </select>
 
     <select id="findUserListByRoleId" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from sys_user
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
         where id in (select user_id from sys_role_user where role_id = #{roleId})
     </select>
 
     <select id="findAll" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from sys_user
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
     </select>
+
+    <select id="findUserListByDeptList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        <where>
+            dept_id in
+            <foreach collection="collection" item="i" open="(" close=")" separator=",">
+                #{i,jdbcType=INTEGER}
+            </foreach>
+        </where>
+    </select>
+
+    <delete id="deleteByIdList">
+        delete
+        from sys_user
+        <where>
+            id in
+            <foreach collection="collection" item="i" open="(" close=")" separator=",">
+                #{i,jdbcType=INTEGER}
+            </foreach>
+        </where>
+    </delete>
 </mapper>

@@ -9,7 +9,7 @@ import com.wx.domain.dto.SearchLogDto;
 import com.wx.domain.entity.*;
 import com.wx.exception.ParamException;
 import com.wx.helper.RequestHolder;
-import com.wx.param.SearchLogParam;
+import com.wx.domain.param.SearchLogParam;
 import com.wx.util.IpUtil;
 import com.wx.util.JsonUtil;
 import com.wx.util.ValidateUtil;
@@ -47,7 +47,7 @@ public class SysLogService {
         Preconditions.checkNotNull(sysLog, "待还原的记录不存在");
         switch (sysLog.getType()){
             case LogType.TYPE_DEPT:
-                SysDept beforeDept = sysDeptMapper.selectByPrimaryKey(sysLog.getTargetId());
+                SysDept beforeDept = sysDeptMapper.findById(sysLog.getTargetId());
                 Preconditions.checkNotNull(beforeDept, "待还原的部门已经不存在了");
                 if (StringUtils.isEmpty(sysLog.getNewValue())  || StringUtils.isEmpty(sysLog.getOldValue())) {
                     throw new ParamException("新增和删除操作不做还原");

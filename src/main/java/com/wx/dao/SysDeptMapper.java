@@ -16,15 +16,19 @@ public interface SysDeptMapper {
 
     int insertSelective(SysDept record);
 
-    SysDept selectByPrimaryKey(Integer id);
+    SysDept findById(Integer id);
 
     int updateByPrimaryKeySelective(SysDept record);
 
     int updateByPrimaryKey(SysDept record);
     
-    List<SysDept> selectAll();
+    List<SysDept> findAll();
     
     List<Integer> selectBySelective(SysDept continuation);
     
     List<SysDept> selectChildDeptListByLevel(String level);
+    
+    int deleteByIdList(List<Integer> sysUserIdList);
+    
+    List<Integer> findChildrenByLevel(String level);
 }

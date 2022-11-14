@@ -7,7 +7,7 @@ import com.wx.domain.beans.PageResult;
 import com.wx.domain.entity.SysAcl;
 import com.wx.dao.SysAclMapper;
 import com.wx.helper.RequestHolder;
-import com.wx.param.AclParam;
+import com.wx.domain.param.AclParam;
 import com.wx.util.IpUtil;
 import org.springframework.stereotype.Service;
 

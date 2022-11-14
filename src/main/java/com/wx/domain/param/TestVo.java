@@ -1,18 +1,16 @@
-package com.wx.domain.vo;
+package com.wx.domain.param;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-/**
- * @author 22343
- * 测试Vo对象
- */
-@Data
+@Getter
+@Setter
 public class TestVo {
 
     @NotBlank

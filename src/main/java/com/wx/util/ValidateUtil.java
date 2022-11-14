@@ -1,9 +1,8 @@
 package com.wx.util;
 
-import com.google.common.base.Preconditions;
+import cn.hutool.core.collection.CollUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.wx.domain.vo.TestVo;
 import com.wx.exception.ParamException;
 import org.springframework.util.CollectionUtils;
 
@@ -57,7 +56,18 @@ public class ValidateUtil {
 	public static void check(Object param) throws ParamException {
 		Map<String, String> map = ValidateUtil.validateObject(param);
 		if (!CollectionUtils.isEmpty(map)) {
-			throw new ParamException(map.toString());
+			throw new IllegalArgumentException(map.toString());
+		}
+	}
+	
+	/**
+	 * 增添支持多个参数的校验
+	 */
+	public static void check(Object [] param) throws IllegalArgumentException {
+		List<Object> objects = CollUtil.newArrayList(param);
+		List<LinkedHashMap<String,String>> map = ValidateUtil.validateList(objects);
+		if (!CollectionUtils.isEmpty(map)) {
+			throw new IllegalArgumentException(map.toString());
 		}
 	}
 	

@@ -41,8 +41,9 @@ FilterChainProxy
 1. 树形结构优化(菜单类优化)
 2. 缓存优化(redis优化,命名规范化)
 3. 登录优化JWT(利用jwt)
-4. 日志优化(优化Aop)
+4. 日志优化(优化Aop,ValidationUtils校验优化)
 5. 业务代码优化()
 6. 工具类优化(部分工具类优化,如PasswordUtil) | 引用HuTool工具包替换掉
 7. wx-common 工具类引用,因为wx-common 工具类处理异常
 8. 包命名优化
+9. 静态页面优化

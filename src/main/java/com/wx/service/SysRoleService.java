@@ -5,7 +5,7 @@ import com.wx.dao.SysRoleUserMapper;
 import com.wx.domain.entity.SysRole;
 import com.wx.exception.ParamException;
 import com.wx.helper.RequestHolder;
-import com.wx.param.RoleParam;
+import com.wx.domain.param.RoleParam;
 import com.wx.util.IpUtil;
 import org.springframework.stereotype.Service;
 

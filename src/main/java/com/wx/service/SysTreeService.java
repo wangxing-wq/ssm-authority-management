@@ -43,7 +43,7 @@ public class SysTreeService {
 	private SysCoreService sysCoreService;
 	
 	public List<DeptLevelDto> deptTree() {
-		List<SysDept> sysDepts = sysDeptMapper.selectAll();
+		List<SysDept> sysDepts = sysDeptMapper.findAll();
 		if (CollectionUtils.isEmpty(sysDepts)) {
 			return null;
 		}

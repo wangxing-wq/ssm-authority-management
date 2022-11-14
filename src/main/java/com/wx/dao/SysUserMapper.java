@@ -32,5 +32,8 @@ public interface SysUserMapper {
     List<SysUser> findUserListByRoleId(int roleId);
     
     List<SysUser> findAll();
+	
+	List<SysUser> findUserListByDeptList(List<Integer> deptList);
     
+    int deleteByIdList(List<Integer> deptList);
 }

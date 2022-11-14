@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.wx.domain.beans.PageQuery;
 import com.wx.domain.beans.PageResult;
 import com.wx.domain.entity.SysUser;
-import com.wx.param.UserParam;
+import com.wx.domain.param.UserParam;
 import com.wx.service.SysRoleService;
 import com.wx.service.SysTreeService;
 import com.wx.service.SysUserService;
@@ -55,7 +55,6 @@ public class SysUserController {
     @GetMapping("/page.json")
     @ResponseBody
     public JsonData page(@RequestParam("deptId") int deptId, PageQuery pageQuery) {
-        ValidateUtil.check(pageQuery);
         PageResult<SysUser> result = sysUserService.getPageByDeptId(deptId, pageQuery);
         return JsonData.success(result);
     }

@@ -1,5 +1,6 @@
 package com.wx.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.wx.domain.entity.SysUser;
 import com.wx.service.SysUserService;
 import com.wx.util.MD5Util;
@@ -56,13 +57,14 @@ public class UserController {
 				response.sendRedirect("/admin/index.page");
 			}
 		}
-		
-		request.setAttribute("error",errorMsg);
 		request.setAttribute("username",username);
-		if (ObjectUtils.isEmpty(ret)) {
-			request.setAttribute("ret",ret);
+		request.setAttribute("ret",ret);
+		if(StrUtil.isNotBlank(errorMsg)){
+			request.setAttribute("error",errorMsg);
+			String path = "/signin.jsp";
+			response.setHeader("method", "GET");
+			request.getRequestDispatcher(path).forward(request,response);
 		}
-		String path = "signin.jsp";
-		request.getRequestDispatcher(path).forward(request,response);
+		
 	}
 }

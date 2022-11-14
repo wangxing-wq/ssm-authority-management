@@ -5,7 +5,7 @@ import com.wx.domain.entity.SysAclModule;
 import com.wx.exception.ParamException;
 import com.wx.helper.LevelHelper;
 import com.wx.helper.RequestHolder;
-import com.wx.param.AclModuleParam;
+import com.wx.domain.param.AclModuleParam;
 import com.wx.util.IpUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

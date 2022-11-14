@@ -1,4 +1,4 @@
-package com.wx.param;
+package com.wx.domain.param;
 
 import lombok.Getter;
 import lombok.Setter;

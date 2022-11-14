@@ -1,7 +1,7 @@
 package com.wx.controller;
 
 import com.wx.domain.beans.JsonData;
-import com.wx.param.AclModuleParam;
+import com.wx.domain.param.AclModuleParam;
 import com.wx.service.SysAclModuleService;
 import com.wx.service.SysTreeService;
 import com.wx.util.ValidateUtil;

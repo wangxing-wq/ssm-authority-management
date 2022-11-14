@@ -2,7 +2,7 @@ package com.wx.controller;
 
 import com.wx.domain.beans.JsonData;
 import com.wx.domain.beans.PageQuery;
-import com.wx.param.SearchLogParam;
+import com.wx.domain.param.SearchLogParam;
 import com.wx.service.SysLogService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

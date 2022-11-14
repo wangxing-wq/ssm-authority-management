@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.wx.domain.beans.JsonData;
 import com.wx.domain.entity.SysUser;
-import com.wx.param.RoleParam;
+import com.wx.domain.param.RoleParam;
 import com.wx.service.*;
 import com.wx.util.StringUtil;
 import com.wx.util.ValidateUtil;
@@ -88,7 +88,7 @@ public class SysRoleController {
     @ResponseBody
     public JsonData users(@RequestParam("roleId") int roleId) {
         List<SysUser> selectedUserList = sysRoleUserService.getListByRoleId(roleId);
-        List<SysUser> allUserList = sysUserService.getAll();
+        List<SysUser> allUserList = sysUserService.findUserList();
         List<SysUser> unselectedUserList = Lists.newArrayList();
         Set<Integer> selectedUserIdSet = selectedUserList.stream().map(SysUser::getId).collect(Collectors.toSet());
         for(SysUser sysUser : allUserList) {

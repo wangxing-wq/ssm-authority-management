@@ -1,9 +1,6 @@
-package com.wx.param;
+package com.wx.domain.param;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
@@ -22,7 +19,7 @@ public class DeptParam {
     @Length(max = 15, min = 2, message = "部门名称长度需要在2-15个字之间")
     private String name;
 
-    private Integer parentId = 0;
+    private Integer parentId;
 
     @NotNull(message = "展示顺序不可以为空")
     private Integer seq;

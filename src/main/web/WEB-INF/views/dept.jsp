@@ -209,14 +209,14 @@
             $.ajax({
                 url: "/sys/dept/tree.json",
                 success : function (result) {
-                    if (result.ret) {
+                    if (result.code === '200') {
                         deptList = result.data;
                         var rendered = Mustache.render(deptListTemplate, {deptList: result.data});
                         $("#deptList").html(rendered);
                         recursiveRenderDept(result.data);
                         bindDeptClick();
                     } else {
-                        showMessage("加载部门列表", result.msg, false);
+                        showMessage("加载部门列表", result.message, false);
                     }
                 }
             })
@@ -259,11 +259,11 @@
                             id: deptId
                         },
                         success: function (result) {
-                            if (result.ret) {
+                            if (result.code === '200') {
                                 showMessage("删除部门[" + deptName + "]", "操作成功", true);
                                 loadDeptTree();
                             } else {
-                                showMessage("删除部门[" + deptName + "]", result.msg, false);
+                                showMessage("删除部门[" + deptName + "]", result.message, false);
                             }
                         }
                     });
@@ -339,7 +339,7 @@
         }
 
         function renderUserListAndPage(result, url) {
-            if (result.ret) {
+            if (result.code === '200') {
                 if (result.data.total > 0){
                     var rendered = Mustache.render(userListTemplate, {
                         userList: result.data.data,
@@ -374,7 +374,7 @@
                 var pageNo = $("#userPage .pageNo").val() || 1;
                 renderPage(url, result.data.total, pageNo, pageSize, result.data.total > 0 ? result.data.data.length : 0, "userPage", renderUserListAndPage);
             } else {
-                showMessage("获取部门下用户列表", result.msg, false);
+                showMessage("获取部门下用户列表", result.message, false);
             }
         }
 
@@ -419,7 +419,7 @@
                         if (result.ret) {
                             console.log(result)
                         } else {
-                            showMessage("获取用户权限数据", result.msg, false);
+                            showMessage("获取用户权限数据", result.message, false);
                         }
                     }
                 })
@@ -540,14 +540,14 @@
                 data: $("#deptForm").serializeArray(),
                 type: 'POST',
                 success: function(result) {
-                    if (result.ret) {
+                    if (result.code === '200') {
                         loadDeptTree();
                         if (successCallback) {
-                            successCallback(result);
+                            successCallback(result.data);
                         }
                     } else {
                         if (failCallback) {
-                            failCallback(result);
+                            failCallback(result.data);
                         }
                     }
                 }

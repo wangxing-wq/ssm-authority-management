@@ -45,13 +45,13 @@
             and `operator` = #{operator,jdbcType=VARCHAR}
         </if>
         <if test="operateTime != null">
-            and  operate_time = #{operateTime,jdbcType=TIMESTAMP}
+            and operate_time = #{operateTime,jdbcType=TIMESTAMP}
         </if>
         <if test="operateIp != null">
             and operate_ip = #{operateIp,jdbcType=VARCHAR}
         </if>
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         <!--@mbg.generated-->
         select
         <include refid="Base_Column_List"/>
@@ -176,15 +176,14 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="findAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from sys_dept
     </select>
 
     <select id="selectBySelective" resultType="integer">
-        select
-        id
+        select id
         from sys_dept
         <where>
             <include refid="conditional"/>
@@ -195,6 +194,21 @@
         select
         <include refid="Base_Column_List"/>
         from sys_dept
-        WHERE level like concat(#{level},'.%')
+        WHERE level like concat(#{level}, '.%')
+    </select>
+
+    <delete id="deleteByIdList">
+        delete from sys_dept
+        <where>
+            id in
+            <foreach collection="collection" item="i" open="(" close=")" separator=",">
+                #{i,jdbcType=INTEGER}
+            </foreach>
+        </where>
+    </delete>
+
+    <select id="findChildrenByLevel" resultType="java.lang.Integer">
+        select id from sys_dept
+        where level like concat(#{level,jdbcType=VARCHAR},'%')
     </select>
 </mapper>

@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.wx.domain.beans.JsonData;
 import com.wx.domain.beans.PageQuery;
 import com.wx.domain.entity.SysRole;
-import com.wx.param.AclParam;
+import com.wx.domain.param.AclParam;
 import com.wx.service.SysAclService;
 import com.wx.service.SysRoleService;
 import com.wx.util.ValidateUtil;
@@ -18,6 +18,9 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 22343
+ */
 @Controller
 @RequestMapping("/sys/acl")
 @Slf4j

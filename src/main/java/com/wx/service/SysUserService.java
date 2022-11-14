@@ -1,12 +1,12 @@
 package com.wx.service;
 
-import com.wx.dao.SysLogMapper;
+import cn.hutool.core.collection.CollUtil;
 import com.wx.dao.SysUserMapper;
 import com.wx.domain.beans.PageQuery;
 import com.wx.domain.beans.PageResult;
 import com.wx.domain.entity.SysUser;
 import com.wx.helper.RequestHolder;
-import com.wx.param.UserParam;
+import com.wx.domain.param.UserParam;
 import com.wx.util.IpUtil;
 import com.wx.util.MD5Util;
 import com.wx.util.PasswordUtil;
@@ -83,7 +83,27 @@ public class SysUserService {
 		return sysUserMapper.selectByCondition(SysUser.builder().mail(param.getTelephone()).build());
 	}
 	
-	public List<SysUser> getAll() {
-		return sysUserMapper.findAll();
+	public List<SysUser> findUserList() {
+		return findUserList(null);
+	}
+	
+	public int findUserCount(List<Integer> deptList) {
+		if (CollUtil.isEmpty(deptList)){
+			return 0;
+		}
+		return findUserList(deptList).size();
+	}
+	public List<SysUser> findUserList(List<Integer> deptList) {
+		if (CollUtil.isEmpty(deptList)){
+			return sysUserMapper.findAll();
+		}
+		return sysUserMapper.findUserListByDeptList(deptList);
+	}
+	
+	public int deleteByIdList(List<Integer> deptList) {
+		if (CollUtil.isEmpty(deptList)){
+			return 0;
+		}
+		return sysUserMapper.deleteByIdList(deptList);
 	}
 }
