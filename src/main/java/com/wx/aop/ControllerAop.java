@@ -12,12 +12,14 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 /**
  * @author 22343
  * @version 1.0
  * 对Controller层进行统一操作
- * TODO: 不知道为什么需要放在Web.xml里面
- * TODO: 添加Dao层的Aop管理,如果没有对应的权限不能进行删除
+ * <br>TODO: 不知道为什么需要放在Web.xml里面</br>
+ * <br>TODO: 添加Dao层的Aop管理,如果没有对应的权限不能进行删除</br>
  */
 @Slf4j
 @Aspect
@@ -41,6 +43,7 @@ public class ControllerAop {
 		// Console.log("{}",joinPoint.getThis()); 当前对象
 		// TODO: 2022/11/13 统一参数校验,暂时完成,待测试
 		if (ArrayUtil.isNotEmpty(joinPoint.getArgs())) {
+			log.debug("统一参数校验:校验源 {}",Arrays.toString(joinPoint.getArgs()));
 			ValidateUtil.check(joinPoint.getArgs());
 		}
 		timer.interval(joinPoint.getSignature().toString());

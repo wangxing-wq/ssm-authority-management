@@ -1,7 +1,7 @@
 package com.wx.service;
 
 import com.google.common.base.Joiner;
-import com.wx.constant.CacheKeyConstants;
+import com.wx.enums.CacheKeyEnum;
 import com.wx.domain.beans.RedisPool;
 import com.wx.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +17,11 @@ public class SysCacheService {
     @Resource(name = "redisPool")
     private RedisPool redisPool;
 
-    public void saveCache(String toSavedValue, int timeoutSeconds, CacheKeyConstants prefix) {
+    public void saveCache(String toSavedValue, int timeoutSeconds, CacheKeyEnum prefix) {
         saveCache(toSavedValue, timeoutSeconds, prefix, null);
     }
 
-    public void saveCache(String toSavedValue, int timeoutSeconds, CacheKeyConstants prefix, String... keys) {
+    public void saveCache(String toSavedValue, int timeoutSeconds, CacheKeyEnum prefix, String... keys) {
         if (toSavedValue == null) {
             return;
         }
@@ -37,7 +37,7 @@ public class SysCacheService {
         }
     }
 
-    public String getFromCache(CacheKeyConstants prefix, String... keys) {
+    public String getFromCache(CacheKeyEnum prefix, String... keys) {
         ShardedJedis shardedJedis = null;
         String cacheKey = generateCacheKey(prefix, keys);
         try {
@@ -52,7 +52,7 @@ public class SysCacheService {
         }
     }
 
-    private String generateCacheKey(CacheKeyConstants prefix, String... keys) {
+    private String generateCacheKey(CacheKeyEnum prefix, String... keys) {
         String key = prefix.name();
         if (keys != null && keys.length > 0) {
             key += "_" + Joiner.on("_").join(keys);

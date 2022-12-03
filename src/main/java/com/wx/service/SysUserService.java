@@ -5,8 +5,8 @@ import com.wx.dao.SysUserMapper;
 import com.wx.domain.beans.PageQuery;
 import com.wx.domain.beans.PageResult;
 import com.wx.domain.entity.SysUser;
-import com.wx.helper.RequestHolder;
 import com.wx.domain.param.UserParam;
+import com.wx.helper.RequestHolder;
 import com.wx.util.IpUtil;
 import com.wx.util.MD5Util;
 import com.wx.util.PasswordUtil;
@@ -14,12 +14,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author 22343
  * @version 1.0
+ * TODO 优化check校验<br/>
+ * TODO 优化邮件发送,最好不要存在常量全通过配置<br/>
  */
 @Service
 public class SysUserService {
@@ -28,7 +32,6 @@ public class SysUserService {
 	private SysUserMapper sysUserMapper;
 	@Resource
 	private SysLogService sysLogService;
-	
 	
 	
 	public int updateByPrimaryKeySelective(SysUser record) {
@@ -45,29 +48,29 @@ public class SysUserService {
 	}
 	
 	public void save(UserParam param) {
-		// TODO: 2022/10/26 优化Check逻辑校验
 		Assert.isNull(checkPhone(param),"手机号已被占用");
 		Assert.isNull(checkEmail(param),"邮箱已被占用");
 		String password = PasswordUtil.randomPassword();
 		String encryptedPassword = MD5Util.encrypt(password);
 		SysUser user = SysUser.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).password(encryptedPassword).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
-		// TODO: 2022/10/27 发送邮箱
+		ArrayList<String> tos = CollUtil.newArrayList("wx2234346829@126.com",param.getMail());
+		// MailUtil.send(tos,"权限系统分发账号","账号:\t" + param.getUsername() + "\t密码:\t" + password,false);
 		user.setOperator(RequestHolder.getCurrentUser().getOperator());
 		user.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
 		user.setOperateTime(new Date());
 		sysUserMapper.insertSelective(user);
-		sysLogService.saveUserLog(null, user);
+		sysLogService.saveUserLog(null,user);
 	}
 	
 	public void update(UserParam param) {
-		Assert.isNull(checkPhone(param),"手机号已被占用");
-		Assert.isNull(checkEmail(param),"邮箱已被占用");
-		SysUser user = SysUser.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
+		Assert.isTrue(Objects.equals(checkPhone(param).getId(),param.getId()),"手机号已被占用");
+		Assert.isTrue(Objects.equals(checkEmail(param).getId(),param.getId()),"邮箱已被占用");
+		SysUser user = SysUser.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail()).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
 		user.setOperator(RequestHolder.getCurrentUser().getOperator());
 		user.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
 		user.setOperateTime(new Date());
-		sysUserMapper.updateByPrimaryKey(user);
-		sysLogService.saveUserLog(user, sysUserMapper.selectByPrimaryKey(param.getId()));
+		sysUserMapper.updateByPrimaryKeySelective(user);
+		sysLogService.saveUserLog(user,sysUserMapper.selectByPrimaryKey(param.getId()));
 	}
 	
 	public PageResult<SysUser> getPageByDeptId(int deptId,PageQuery pageQuery) {
@@ -80,7 +83,7 @@ public class SysUserService {
 	}
 	
 	private SysUser checkPhone(UserParam param) {
-		return sysUserMapper.selectByCondition(SysUser.builder().mail(param.getTelephone()).build());
+		return sysUserMapper.selectByCondition(SysUser.builder().telephone(param.getTelephone()).build());
 	}
 	
 	public List<SysUser> findUserList() {
@@ -88,20 +91,21 @@ public class SysUserService {
 	}
 	
 	public int findUserCount(List<Integer> deptList) {
-		if (CollUtil.isEmpty(deptList)){
+		if (CollUtil.isEmpty(deptList)) {
 			return 0;
 		}
 		return findUserList(deptList).size();
 	}
+	
 	public List<SysUser> findUserList(List<Integer> deptList) {
-		if (CollUtil.isEmpty(deptList)){
+		if (CollUtil.isEmpty(deptList)) {
 			return sysUserMapper.findAll();
 		}
 		return sysUserMapper.findUserListByDeptList(deptList);
 	}
 	
 	public int deleteByIdList(List<Integer> deptList) {
-		if (CollUtil.isEmpty(deptList)){
+		if (CollUtil.isEmpty(deptList)) {
 			return 0;
 		}
 		return sysUserMapper.deleteByIdList(deptList);

@@ -151,7 +151,7 @@
             }
 
             function renderLogListAndPage(result, url) {
-                if (result.ret) {
+                if (result.code === '200') {
                     if (result.data.total > 0) {
                         var rendered = Mustache.render(logListTemplate, {
                             "logList": result.data.data,
@@ -215,7 +215,7 @@
                                 id: logId
                             },
                             success: function (result) {
-                                if (result.ret) {
+                                if (result.code === '200') {
                                     showMessage("还原历史记录", "操作成功", true);
                                     loadLogList();
                                 } else {

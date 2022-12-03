@@ -1,9 +1,8 @@
 package com.wx.service;
 
 import com.alibaba.druid.util.StringUtils;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.common.collect.Lists;
-import com.wx.constant.CacheKeyConstants;
+import com.wx.enums.CacheKeyEnum;
 import com.wx.dao.SysAclMapper;
 import com.wx.dao.SysRoleAclMapper;
 import com.wx.dao.SysRoleUserMapper;
@@ -102,11 +101,11 @@ public class SysCoreService {
 
     public List<SysAcl> getCurrentUserAclListFromCache() {
         int userId = RequestHolder.getCurrentUser().getId();
-        String cacheValue = sysCacheService.getFromCache(CacheKeyConstants.USER_ACLS, String.valueOf(userId));
+        String cacheValue = sysCacheService.getFromCache(CacheKeyEnum.USER_ACL, String.valueOf(userId));
         if (StringUtils.isEmpty(cacheValue)) {
             List<SysAcl> aclList = getCurrentUserAclList();
             if (!CollectionUtils.isEmpty(aclList)) {
-                sysCacheService.saveCache(JsonUtil.obj2String(aclList), 600, CacheKeyConstants.USER_ACLS,
+                sysCacheService.saveCache(JsonUtil.obj2String(aclList), 600, CacheKeyEnum.USER_ACL,
                         String.valueOf(userId));
             }
             return aclList;

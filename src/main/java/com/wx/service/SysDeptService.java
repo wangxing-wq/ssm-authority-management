@@ -119,6 +119,7 @@ public class SysDeptService {
 		// 删除存在用户和部门
 		int deptDeleteCount = deleteByIdList(deptList);
 		int userDeleteCount = sysUserService.deleteByIdList(sysUserIdList);
+		Assert.isTrue(sysUserList.size() == 0,BizException::new);
 		Assert.isTrue(deptDeleteCount == deptList.size(),BizException::new);
 		Assert.isTrue(userDeleteCount == sysUserIdList.size(),BizException::new);
 		return true;
