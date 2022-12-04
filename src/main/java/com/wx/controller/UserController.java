@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.wx.domain.entity.SysUser;
 import com.wx.service.SysUserService;
 import com.wx.util.MD5Util;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -16,6 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * @author 22343
+ */
+@Slf4j
 @Controller
 public class UserController {
 	

@@ -18,7 +18,6 @@
         <result column="operate_ip" jdbcType="VARCHAR" property="operateIp"/>
     </resultMap>
     <sql id="Base_Column_List">
-        <!--@mbg.generated-->
         id,
         code,
         `name`,
@@ -32,33 +31,8 @@
         operate_time,
         operate_ip
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        <!--@mbg.generated-->
-        select
-        <include refid="Base_Column_List"/>
-        from sys_acl
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        <!--@mbg.generated-->
-        delete
-        from sys_acl
-        where id = #{id,jdbcType=INTEGER}
-    </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.wx.domain.entity.SysAcl" useGeneratedKeys="true">
-        <!--@mbg.generated-->
-        insert into sys_acl (code, `name`, acl_module_id,
-                             url, `type`, `status`,
-                             seq, remark, `operator`,
-                             operate_time, operate_ip)
-        values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{aclModuleId,jdbcType=INTEGER},
-                #{url,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
-                #{seq,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR},
-                #{operateTime,jdbcType=TIMESTAMP}, #{operateIp,jdbcType=VARCHAR})
-    </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.wx.domain.entity.SysAcl"
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.wx.domain.entity.SysAcl"
             useGeneratedKeys="true">
-        <!--@mbg.generated-->
         insert into sys_acl
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="code != null">
@@ -131,7 +105,12 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.wx.domain.entity.SysAcl">
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete
+        from sys_acl
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <update id="updateById" parameterType="com.wx.domain.entity.SysAcl">
         <!--@mbg.generated-->
         update sys_acl
         <set>
@@ -171,51 +150,91 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.wx.domain.entity.SysAcl">
-        <!--@mbg.generated-->
-        update sys_acl
-        set code          = #{code,jdbcType=VARCHAR},
-            `name`        = #{name,jdbcType=VARCHAR},
-            acl_module_id = #{aclModuleId,jdbcType=INTEGER},
-            url           = #{url,jdbcType=VARCHAR},
-            `type`        = #{type,jdbcType=INTEGER},
-            `status`      = #{status,jdbcType=INTEGER},
-            seq           = #{seq,jdbcType=INTEGER},
-            remark        = #{remark,jdbcType=VARCHAR},
-            `operator`    = #{operator,jdbcType=VARCHAR},
-            operate_time  = #{operateTime,jdbcType=TIMESTAMP},
-            operate_ip    = #{operateIp,jdbcType=VARCHAR}
+    <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_acl
         where id = #{id,jdbcType=INTEGER}
-    </update>
-
+    </select>
+    <select id="findByBeanSelective" parameterType="com.wx.domain.entity.SysAcl" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from sys_acl
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="code != null">
+                and code = #{code,jdbcType=VARCHAR}
+            </if>
+            <if test="name != null">
+                and `name` = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="aclModuleId != null">
+                and acl_module_id = #{aclModuleId,jdbcType=INTEGER}
+            </if>
+            <if test="url != null">
+                and url = #{url,jdbcType=VARCHAR}
+            </if>
+            <if test="type != null">
+                and `type` = #{type,jdbcType=INTEGER}
+            </if>
+            <if test="status != null">
+                and `status` = #{status,jdbcType=INTEGER}
+            </if>
+            <if test="seq != null">
+                and seq = #{seq,jdbcType=INTEGER}
+            </if>
+            <if test="remark != null">
+                and remark = #{remark,jdbcType=VARCHAR}
+            </if>
+            <if test="operator != null">
+                and `operator` = #{operator,jdbcType=VARCHAR}
+            </if>
+            <if test="operateTime != null">
+                and operate_time = #{operateTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="operateIp != null">
+                and operate_ip = #{operateIp,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
     <select id="findListByAclModuleId" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from sys_acl
+        select
+        <include refid="Base_Column_List"/>
+        from sys_acl
         where acl_module_id = #{aclModuleId,jdbcType=INTEGER}
-        order by seq desc limit #{pageQuery.offset},#{pageQuery.pageSize}
+        order by seq desc
+        limit #{pageQuery.offset},#{pageQuery.pageSize}
     </select>
-
     <select id="findAll" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from sys_acl
+        select
+        <include refid="Base_Column_List"/>
+        from sys_acl
     </select>
-
     <select id="findListByUserId" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/>
-        from sys_acl where id in(
-            select sys_role_acl.acl_id from sys_role_user join sys_role_acl
-            where sys_role_user.user_id = #{userId} and sys_role_user.role_id = sys_role_acl.role_id
-        )
+        select
+        <include refid="Base_Column_List"/>
+        from sys_acl
+        where id in (select sys_role_acl.acl_id
+                     from sys_role_user
+                              join sys_role_acl
+                     where sys_role_user.user_id = #{userId}
+                       and sys_role_user.role_id = sys_role_acl.role_id)
     </select>
-
     <select id="getByUrl" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from sys_acl where url = #{url}
+        select
+        <include refid="Base_Column_List"/>
+        from sys_acl
+        where url = #{url}
     </select>
-<!--    TODO: 2022/11/10 -->
     <select id="findListByUserIdList" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from sys_acl
+        select
+        <include refid="Base_Column_List"/>
+        from sys_acl
     </select>
-
     <select id="findListByAclId" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from sys_acl
+        select
+        <include refid="Base_Column_List"/>
+        from sys_acl
         <where>
             id in
             <foreach collection="collection" item="i" separator="," open="(" close=")">
@@ -223,4 +242,5 @@
             </foreach>
         </where>
     </select>
+
 </mapper>

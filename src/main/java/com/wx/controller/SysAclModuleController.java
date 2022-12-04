@@ -11,9 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 
+/**
+ * @author 22343
+ */
+@Slf4j
 @Controller
 @RequestMapping("/sys/aclModule")
-@Slf4j
 public class SysAclModuleController {
 	
 	@Resource

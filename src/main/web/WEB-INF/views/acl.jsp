@@ -207,6 +207,9 @@
 </ol>
 
 
+
+
+
         </script>
 
         <script id="aclListTemplate" type="x-tmpl-mustache">
@@ -226,10 +229,16 @@
             <a class="red acl-role" href="#" data-id="{{id}}">
                 <i class="ace-icon fa fa-flag bigger-100"></i>
             </a>
+            <a class="red acl-role-delete" href="#" data-id="{{id}}" data-name="{{name}}">
+                    <i class="ace-icon fa fa-trash-o bigger-100"></i>
+            </a>
         </div>
     </td>
 </tr>
 {{/aclList}}
+
+
+
 
 
         </script>
@@ -293,7 +302,7 @@
                                 updateAclModule(true, function (data) {
                                     $("#dialog-aclModule-form").dialog("close");
                                 }, function (data) {
-                                    showMessage("新增权限模块", data.msg, false);
+                                    showMessage("新增权限模块", data.message, false);
                                 })
                             },
                             "取消": function () {
@@ -460,7 +469,7 @@
                                     updateAclModule(false, function (data) {
                                         $("#dialog-aclModule-form").dialog("close");
                                     }, function (data) {
-                                        showMessage("编辑权限模块", data.msg, false);
+                                        showMessage("编辑权限模块", data.message, false);
                                     })
                                 },
                                 "取消": function () {
@@ -562,10 +571,34 @@
                             }
                         })
                     });
+                    $(".acl-role-delete").click(function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        let aclId = $(this).attr("data-id");
+                        let aclName = $(this).attr("data-name");
+                        if (confirm("确定要删除权限点[" + aclName + "]吗?")) {
+                            $.ajax({
+                                method: "POST",
+                                url: "/sys/acl/aclList.json",
+                                data: {
+                                    id: aclId
+                                },
+                                success: function (result) {
+                                    if (result.code === '200') {
+                                        showMessage("确定要删除权限点[" + aclModuleName + "]", "操作成功", true);
+                                        loadAclModuleTree();
+                                    } else {
+                                        showMessage("确定要删除权限点[" + aclModuleName + "]", result.message, false);
+                                    }
+                                }
+                            });
+                        }
+
+                    })
                     $(".acl-edit").click(function (e) {
                         e.preventDefault();
                         e.stopPropagation();
-                        var aclId = $(this).attr("data-id");
+                        let aclId = $(this).attr("data-id");
                         $("#dialog-acl-form").dialog({
                             model: true,
                             title: "编辑权限",
@@ -575,7 +608,7 @@
                                 recursiveRenderAclModuleSelect(aclModuleList, 1);
                                 $("#aclForm")[0].reset();
                                 $("#aclModuleSelectId").html(optionStr);
-                                var targetAcl = aclMap[aclId];
+                                let targetAcl = aclMap[aclId];
                                 if (targetAcl) {
                                     $("#aclId").val(aclId);
                                     $("#aclModuleSelectId").val(targetAcl.aclModuleId);
@@ -593,7 +626,7 @@
                                     updateAcl(false, function (data) {
                                         $("#dialog-acl-form").dialog("close");
                                     }, function (data) {
-                                        showMessage("编辑权限", data.msg, false);
+                                        showMessage("编辑权限", data.message, false);
                                     })
                                 },
                                 "取消": function () {
@@ -621,7 +654,7 @@
                                 updateAcl(true, function (data) {
                                     $("#dialog-acl-form").dialog("close");
                                 }, function (data) {
-                                    showMessage("新增权限", data.msg, false);
+                                    showMessage("新增权限", data.message, false);
                                 })
                             },
                             "取消": function () {

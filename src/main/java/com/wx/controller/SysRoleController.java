@@ -2,16 +2,15 @@ package com.wx.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.wx.domain.beans.JsonData;
 import com.wx.domain.entity.SysUser;
 import com.wx.domain.param.RoleParam;
 import com.wx.service.*;
 import com.wx.util.StringUtil;
 import com.wx.util.ValidateUtil;
+import com.wx.web.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -20,6 +19,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * @author 22343
+ */
+@Slf4j
 @Controller
 @RequestMapping("/sys/role")
 public class SysRoleController {
@@ -35,58 +38,58 @@ public class SysRoleController {
     @Resource
     private SysUserService sysUserService;
 
-    @RequestMapping("role.page")
+    @GetMapping("role.page")
     public ModelAndView page() {
         return new ModelAndView("role");
     }
 
-    @RequestMapping("/save.json")
+    @PostMapping("/save.json")
     @ResponseBody
-    public JsonData saveRole(RoleParam param) {
+    public Result saveRole(RoleParam param) {
         ValidateUtil.check(param);
         sysRoleService.save(param);
-        return JsonData.success();
+        return Result.success();
     }
 
     @RequestMapping("/update.json")
-    @ResponseBody
-    public JsonData updateRole(RoleParam param) {
+    @PostMapping
+    public Result updateRole(RoleParam param) {
         sysRoleService.update(param);
-        return JsonData.success();
+        return Result.success();
     }
 
     @RequestMapping("/list.json")
     @ResponseBody
-    public JsonData list() {
-        return JsonData.success(sysRoleService.getAll());
+    public Result list() {
+        return Result.success(sysRoleService.getAll());
     }
 
-    @RequestMapping("/roleTree.json")
+    @GetMapping("/roleTree.json")
     @ResponseBody
-    public JsonData roleTree(@RequestParam("roleId") int roleId) {
-        return JsonData.success(sysTreeService.roleTree(roleId));
+    public Result roleTree(@RequestParam("roleId") int roleId) {
+        return Result.success(sysTreeService.roleTree(roleId));
     }
 
-    @RequestMapping("/changeAcls.json")
+    @GetMapping("/changeAcls.json")
     @ResponseBody
-    public JsonData changeAclList(@RequestParam("roleId") int roleId, @RequestParam(value = "aclIds", required = false,
+    public Result changeAclList(@RequestParam("roleId") int roleId, @RequestParam(value = "aclIds", required = false,
             defaultValue = "") String aclIds) {
         List<Integer> aclIdList = StringUtil.splitToListInt(aclIds);
         sysRoleAclService.changeRoleAclList(roleId, aclIdList);
-        return JsonData.success();
+        return Result.success();
     }
 
-    @RequestMapping("/changeUsers.json")
+    @GetMapping("/changeUsers.json")
     @ResponseBody
-    public JsonData changeUsers(@RequestParam("roleId") int roleId, @RequestParam(value = "userIds", required = false, defaultValue = "") String userIds) {
+    public Result changeUsers(@RequestParam("roleId") int roleId, @RequestParam(value = "userIds", required = false, defaultValue = "") String userIds) {
         List<Integer> userIdList = StringUtil.splitToListInt(userIds);
         sysRoleUserService.changeRoleUsers(roleId, userIdList);
-        return JsonData.success();
+        return Result.success();
     }
 
-    @RequestMapping("/users.json")
+    @GetMapping("/users.json")
     @ResponseBody
-    public JsonData users(@RequestParam("roleId") int roleId) {
+    public Result users(@RequestParam("roleId") int roleId) {
         List<SysUser> selectedUserList = sysRoleUserService.getListByRoleId(roleId);
         List<SysUser> allUserList = sysUserService.findUserList();
         List<SysUser> unselectedUserList = Lists.newArrayList();
@@ -99,6 +102,6 @@ public class SysRoleController {
         Map<String, List<SysUser>> map = Maps.newHashMap();
         map.put("selected", selectedUserList);
         map.put("unselected", unselectedUserList);
-        return JsonData.success(map);
+        return Result.success(map);
     }
 }

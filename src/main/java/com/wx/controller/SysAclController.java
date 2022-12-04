@@ -4,9 +4,10 @@ import com.google.common.collect.Maps;
 import com.wx.domain.beans.PageQuery;
 import com.wx.domain.entity.SysRole;
 import com.wx.domain.param.AclParam;
+import com.wx.enums.AclEnum;
 import com.wx.service.SysAclService;
 import com.wx.service.SysRoleService;
-import com.wx.util.ValidateUtil;
+import com.wx.util.ExceptionHolder;
 import com.wx.web.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,9 @@ import java.util.Map;
 /**
  * @author 22343
  */
+@Slf4j
 @Controller
 @RequestMapping("/sys/acl")
-@Slf4j
 public class SysAclController {
 
     @Resource
@@ -32,15 +33,19 @@ public class SysAclController {
     @PostMapping("/save.json")
     @ResponseBody
     public Result saveAclModule(AclParam param) {
-        ValidateUtil.check(param);
-        sysAclService.save(param);
-        return Result.success();
+        boolean result = sysAclService.save(param);
+        if (!result){
+            return Result.fail(AclEnum.INSERT);
+        }
+        return ExceptionHolder.instance().processResult();
     }
 
     @PostMapping("/update.json")
     @ResponseBody
     public Result updateAclModule(AclParam param) {
-        sysAclService.update(param);
+        if (!sysAclService.update(param)) {
+            return Result.fail(AclEnum.UPDATE);
+        }
         return Result.success();
     }
 
@@ -52,7 +57,7 @@ public class SysAclController {
 
     @GetMapping("aclList.json")
     @ResponseBody
-    public Result acls(@RequestParam("aclId") int aclId) {
+    public Result aclList(@RequestParam("aclId") int aclId) {
         Map<String, Object> map = Maps.newHashMap();
         List<SysRole> roleList = sysRoleService.getRoleListByAclId(aclId);
         map.put("roles", roleList);

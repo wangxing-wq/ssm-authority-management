@@ -44,7 +44,6 @@ public class SysDeptController {
 	@PostMapping("/save.json")
 	public Result save(DeptParam deptParam){
 		if (!sysDeptService.save(deptParam)){
-			// TODO: 2022/10/24 处理的不是特别完美,状态码可以替换,Validate可以使用切面
 			return Result.fail("插入失败DeptParam");
 		}
 		return Result.success();
@@ -52,14 +51,12 @@ public class SysDeptController {
 	
 	@GetMapping("/tree.json")
 	public Result tree() {
-		// TODO: 2022/10/25 可以优化树的排序
 		List<DeptLevelDto> dtoList = sysTreeService.deptTree();
 		return Result.success(dtoList);
 	}
 	
 	@PostMapping("/update.json")
 	public Result updateDept(DeptParam param) {
-		// TODO: 2022/10/25 优化修改方式,Level字段可以取消
 		sysDeptService.update(param);
 		return Result.success();
 	}

@@ -1,7 +1,10 @@
 package com.wx.helper;
 
-import com.wx.exception.ParamException;
-import com.wx.exception.PermissionException;
+import com.wx.exception.BizException;
+import com.wx.exception.HandlerException;
+import com.wx.exception.NotifyException;
+import com.wx.util.ExceptionHolder;
+import com.wx.util.JsonUtil;
 import com.wx.web.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExc
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author 22343
@@ -27,26 +31,39 @@ public class ExceptionHandler extends ExceptionHandlerExceptionResolver {
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request,HttpServletResponse response,Object handler,Exception ex) {
 		String url = request.getRequestURL().toString();
-		String view = "jsonView";
-		Result result;
 		String defaultMsg = "System error";
-		
-		// 这里我们要求项目中所有请求json数据，都使用.json结尾
+		// 后边过滤增加异常处理类型
 		if (url.endsWith(JSON)) {
-			if (ex instanceof PermissionException || ex instanceof ParamException || ex instanceof IllegalArgumentException) {
-				result = Result.fail(ex.getMessage());
-			} else {
-				log.error("unknown json exception, url: {}",url,ex);
-				result = Result.fail(defaultMsg);
-			}
+			return endJson(ex);
 		} else if (url.endsWith(PAGE)) {
-			log.error("unknown page exception, url:" + url,ex);
-			result = Result.fail(defaultMsg);
-			view = "exception";
+			return endPage(ex,url);
 		} else {
 			log.error("unknown exception, url:" + url,ex);
-			result = Result.fail(defaultMsg);
+			return new ModelAndView("jsonView",Result.fail(defaultMsg));
 		}
-		return new ModelAndView(view,result);
+		
 	}
+	
+	public ModelAndView endJson(Exception ex) {
+		Result result = Result.fail();
+		if (ex instanceof HandlerException) {
+			log.error("异常信息:",ex);
+			result = Result.fail((HandlerException) ex);
+		}
+		List<NotifyException> notifyExceptionList = ExceptionHolder.instance().getNotifyExceptionList();
+		if (!notifyExceptionList.isEmpty()) {
+			log.debug("可不处理异常:{}",JsonUtil.obj2String(notifyExceptionList));
+			result = Result.fail(notifyExceptionList.get(0));
+		}
+		if (!(ex instanceof BizException)) {
+			log.info("非业务异常:",ex);
+		}
+		return new ModelAndView("jsonView",result);
+	}
+	
+	public ModelAndView endPage(Exception ex,String url) {
+		log.error("unknown page exception, url:" + url,ex);
+		return new ModelAndView("exception",Result.fail("404"));
+	}
+	
 }

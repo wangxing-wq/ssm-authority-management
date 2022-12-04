@@ -9,6 +9,7 @@ import com.wx.service.SysRoleService;
 import com.wx.service.SysTreeService;
 import com.wx.service.SysUserService;
 import com.wx.web.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +22,7 @@ import java.util.Map;
  * @author 22343
  *
  */
+@Slf4j
 @Controller
 @RequestMapping("/sys/user")
 public class SysUserController {

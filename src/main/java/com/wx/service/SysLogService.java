@@ -89,7 +89,7 @@ public class SysLogService {
                 saveAclModuleLog(beforeAclModule, afterAclModule);
                 break;
             case LogType.TYPE_ACL:
-                SysAcl beforeAcl = sysAclMapper.selectByPrimaryKey(sysLog.getTargetId());
+                SysAcl beforeAcl = sysAclMapper.findById(sysLog.getTargetId());
                 Preconditions.checkNotNull(beforeAcl, "待还原的权限点已经不存在了");
                 if (StringUtils.isEmpty(sysLog.getNewValue())  || StringUtils.isEmpty(sysLog.getOldValue())) {
                     throw new ParamException("新增和删除操作不做还原");
@@ -99,7 +99,7 @@ public class SysLogService {
                 afterAcl.setOperator(RequestHolder.getCurrentUser().getUsername());
                 afterAcl.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
                 afterAcl.setOperateTime(new Date());
-                sysAclMapper.updateByPrimaryKeySelective(afterAcl);
+                sysAclMapper.updateById(afterAcl);
                 saveAclLog(beforeAcl, afterAcl);
                 break;
             case LogType.TYPE_ROLE:
@@ -214,7 +214,7 @@ public class SysLogService {
         sysLog.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         sysLog.setOperateTime(new Date());
         sysLog.setStatus(1);
-        sysLogMapper.insertSelective(sysLog);
+        // sysLogMapper.insertSelective(sysLog);
     }
 
     public void saveRoleLog(SysRole before, SysRole after) {

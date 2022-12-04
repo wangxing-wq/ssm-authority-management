@@ -6,7 +6,7 @@
         总共 {{total}} 中的 {{from}} ~ {{to}}
     </div>
 </div>
-    
+
 <div class="col-xs-6">
     <div class="dataTables_paginate paging_simple_numbers" id="dynamic-table_paginate">
         <ul class="pagination">
@@ -34,7 +34,7 @@
 <script type="text/javascript">
     var paginateTemplate = $("#paginateTemplate").html();
     Mustache.parse(paginateTemplate);
-    
+
     function renderPage(url, total, pageNo, pageSize, currentSize, idElement, callback) {
         var maxPageNo = Math.ceil(total / pageSize);
         var paramStartChar = url.indexOf("?") > 0 ? "&" : "?";
@@ -46,9 +46,9 @@
             pageNo : pageNo,
             maxPageNo : maxPageNo,
             nextPageNo: pageNo >= maxPageNo ? maxPageNo : (pageNo + 1),
-            beforePageNo : pageNo == 1 ? 1 : (pageNo - 1),
-            firstUrl : (pageNo == 1) ? '' : (url + paramStartChar + "pageNo=1&pageSize=" + pageSize),
-            beforeUrl: (pageNo == 1) ? '' : (url + paramStartChar + "pageNo=" + (pageNo - 1) + "&pageSize=" + pageSize),
+            beforePageNo : pageNo === 1 ? 1 : (pageNo - 1),
+            firstUrl : (pageNo === 1) ? '' : (url + paramStartChar + "pageNo=1&pageSize=" + pageSize),
+            beforeUrl: (pageNo === 1) ? '' : (url + paramStartChar + "pageNo=" + (pageNo - 1) + "&pageSize=" + pageSize),
             nextUrl : (pageNo >= maxPageNo) ? '' : (url + paramStartChar + "pageNo=" + (pageNo + 1) + "&pageSize=" + pageSize),
             lastUrl : (pageNo >= maxPageNo) ? '' : (url + paramStartChar + "pageNo=" + maxPageNo + "&pageSize=" + pageSize)
         };
