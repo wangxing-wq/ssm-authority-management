@@ -98,4 +98,55 @@
     <!--        <welcome-file>index.jsp</welcome-file>-->
     <!--    </welcome-file-list>-->
 
+    <filter>
+        <filter-name>knife4jSecurityBasic</filter-name>
+        <filter-class>com.github.xiaoymin.knife4j.spring.filter.SecurityBasicAuthFilter</filter-class>
+        <!--开启basic认证-->
+        <init-param>
+            <param-name>enableBasicAuth</param-name>
+            <!--如果该值配置为true则代表开启-->
+            <param-value>false</param-value>
+        </init-param>
+        <!--用户名&密码-->
+        <init-param>
+            <param-name>userName</param-name>
+            <param-value>lisi</param-value>
+        </init-param>
+        <init-param>
+            <param-name>password</param-name>
+            <param-value>123</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>knife4jSecurityBasic</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- 配置knife4j的url请求路径-->
+
+    <!--1.该接口是springfox提供的Swagger实例接口-->
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>/v2/api-docs</url-pattern>
+    </servlet-mapping>
+    <!--2.该接口是springfox提供的Swagger分组接口-->
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>/swagger-resources</url-pattern>
+    </servlet-mapping>
+    <!--3.该接口是springfox提供的Swagger配置接口-->
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>/swagger-resources/configuration/ui</url-pattern>
+    </servlet-mapping>
+    <!--4.该接口是springfox提供的Swagger权限接口(在knife4j中未使用)-->
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>/swagger-resources/configuration/security</url-pattern>
+    </servlet-mapping>
+
+    <!--5.该接口是knife4j提供的Swagger增强接口-->
+    <servlet-mapping>
+        <servlet-name>spring</servlet-name>
+        <url-pattern>/v2/api-docs-ext</url-pattern>
+    </servlet-mapping>
 </web-app>

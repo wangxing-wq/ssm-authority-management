@@ -27,6 +27,9 @@
     <mvc:resources location="/bootstrap3.3.5/" mapping="/bootstrap3.3.5/**"/>
     <mvc:resources location="/assets/" mapping="/assets/**"/>
     <mvc:resources location="/ztree/" mapping="/ztree/**"/>
+    <mvc:resources location="classpath:/META-INF/resources/" mapping="doc.html"/>
+    <mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
+
     <!--    <bean class="com.mmall.common.ApplicationContextHelper" lazy-init="false"/>-->
     <!-- <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" /> -->
     <!--    <bean class="com.mmall.common.SpringExceptionResolver"/>-->

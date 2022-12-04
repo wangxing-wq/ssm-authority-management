@@ -112,6 +112,14 @@
             <artifactId>druid</artifactId>
             <version>${druid}</version>
         </dependency>
+        <!--引入Knife4j的官方ui包,OpenAPI3建议使用springdoc-openapi项目-->
+        <!--引入Knife4j-->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-mvc</artifactId>
+            <!--在引用时请在maven中央仓库搜索最新版本号，如果不存在则代表尚未发布,作者正在努力开发中-->
+            <version>2.0.5</version>
+        </dependency>
         <!--  mysql  -->
         <dependency>
             <groupId>mysql</groupId>
@@ -165,11 +173,6 @@
             <version>${javax-el}</version>
         </dependency>
         <!--  tools  -->
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>${commons-codec}</version>
-        </dependency>
         <!--  jackson  -->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
@@ -185,12 +188,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
-        </dependency>
-        <!--  email  -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-email</artifactId>
-            <version>${commons-email}</version>
         </dependency>
         <!--          redis  -->
         <dependency>
